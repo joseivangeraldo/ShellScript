@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #########################################################################
 # Exercício 2 - Instruções de Loop                                      #
 #									#	
@@ -17,7 +16,8 @@
 #########################################################################
 
 TIME=5
-
+#Monitora se tem argumento de entrada é diferente de 0
+##Se entrar no programa sem dar o argumento ele sai dando exit 1 erro
 if [ $# -eq 0 ]
 then
 	echo "Favor informar um processo como argumento."
@@ -25,6 +25,8 @@ then
 	exit 1
 fi
 
+##Cria-se um loop infinito
+##Só vai sair se apertar ctrl+C ou similar
 while true
 do
 	if ps axu |grep $1 |grep -v grep |grep -v $0 > /dev/null

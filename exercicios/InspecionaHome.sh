@@ -48,4 +48,5 @@ echo "Arquivos MP4: $MP4COUNT"
 echo
 done # Fim do For no /home
 
+##ao final é preciso voltar o antigo IFS
 IFS=$OLDIFS

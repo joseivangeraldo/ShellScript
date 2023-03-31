@@ -1,0 +1,10 @@
+Usuario: codespace
+Arquivos JPG: 4
+Arquivos MP3: 2
+Arquivos MP4: 0
+
+Usuario: vscode
+Arquivos JPG: 0
+Arquivos MP3: 0
+Arquivos MP4: 0
+
