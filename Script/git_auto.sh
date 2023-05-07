@@ -1,6 +1,6 @@
 #!/bin/bash
 ########################################################################################
-# Arquivo para automatizar funções do git commit                                       #
+# Arquivo para automatizar : git commit, git add, git push                             #
 #									                                                   #	
 # Nome: git_auto.sh							                                           #
 #									                                                   #
@@ -13,7 +13,7 @@
 # Uso: ./git_auto.sh 						                                           #
 #									                                                   #
 ########################################################################################
-NOW=(date '+%Y-%m-%d %H:%M:%S')
+NOW=$(date +'%Y-%m-%d %H:%M:%S')
 #add arquivo
 git add .
 sleep 3
