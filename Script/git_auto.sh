@@ -13,17 +13,12 @@
 # Uso: ./git_auto.sh 						                                           #
 #									                                                   #
 ########################################################################################
-NOW="$(date +"%m-%d-%Y %H:%m")"
+NOW=(date '+%Y-%m-%d %H:%M:%S')
+#add arquivo
+git add .
+sleep 3
 
-$(git add .)
+# add comentarios
+git commit -m "$NOW"
 sleep 3
-if [ $? -eq 0 ] ; then
-    echo "Added to git"
-else
-    # do some repair actions or bail-out with
-    echo "ERROR NESTA PARTE"
-    exit 1
-fi
-$(git commit -a -m "$NOW")
-sleep 3
-$(git push)
+git push
