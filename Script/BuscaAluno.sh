@@ -15,7 +15,7 @@
 #									#
 #########################################################################
 
-ARQALUNOS="/home/ricardo/Cursos/ShellScript/arquivos/alunos2.txt"
+ARQALUNOS="/workspaces/SheellScript/arquivos/alunos2.txt"
 
 clear
 echo "======= Script de Busca de Alunos ========"
