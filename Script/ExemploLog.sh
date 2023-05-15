@@ -18,9 +18,12 @@
 ################################################
 
 DATAHORA=$(date +%H:%M)
-ARQALUNOS="/home/ricardo/Cursos/ShellScript/arquivos/alunos2.txt"
+ARQALUNOS="/workspaces/SheellScript/arquivos/alunos2.txt"
 
-LOG="$HOME/Cursos/ShellScript/Scripts/log_interno.out"
+###VARIAVEL QUE TENHA O NOME DO LOG QUE A GENTE QUER
+LOG="/workspaces/SheellScript/Script/log_interno.out"
+
+
 exec 1>> >(tee -a "$LOG")
 exec 2>&1
 
@@ -36,7 +39,7 @@ echo "Exibir data e hora atual: $DATAHORA"
 # Area de leitura da lista de alunos
 echo "================================="
 echo "Listagem dos Alunos: "
-sort $ARQALUNOS 
+sort $ARQALUNOS | tee -a $LOG
 
 DATAHORA=$(date +%H)
 echo "================================="

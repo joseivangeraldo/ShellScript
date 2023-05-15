@@ -1,0 +1,37 @@
+[H[2J[3J======= Script de Busca de Alunos ========
+
+
+O nome completo do aluno é: 
+
+Fim do Script
+[H[2J[3J======= Script de Busca de Alunos ========
+
+
+O nome completo do aluno é: Rafael dos Santos
+
+Fim do Script
+total 96
+-rwxrwxrwx 1 codespace root       952 May 15 02:15 BuscaAluno.sh
+-rw-rw-rw- 1 codespace root       806 May 15 01:55 BuscaAlunoIf.sh
+-rw-rw-rw- 1 codespace root       800 May 15 01:55 BuscaAlunoIf_BUG.sh
+-rw-rw-rw- 1 codespace root       799 May 15 01:55 BuscaAlunoIf_BUGV2.sh
+-rw-rw-rw- 1 codespace root       846 May 15 01:55 BuscaAlunoParametro.sh
+-rw-rw-rw- 1 codespace root       202 May 15 01:55 ExemploBreak.sh
+-rw-rw-rw- 1 codespace root       248 May 15 01:55 ExemploCase.sh
+-rw-rw-rw- 1 codespace root       205 May 15 01:55 ExemploContinue.sh
+-rw-rw-rw- 1 codespace root      1301 May 15 01:55 ExemploEmail.sh
+-rw-rw-rw- 1 codespace root       110 May 15 01:55 ExemploExitCode.sh
+-rw-rw-rw- 1 codespace root       200 May 15 01:55 ExemploFor.sh
+-rw-rw-rw- 1 codespace root       212 May 15 01:55 ExemploForArquivos.sh
+-rw-rw-rw- 1 codespace root        94 May 15 01:55 ExemploFunction.sh
+-rw-rw-rw- 1 codespace root       158 May 15 01:55 ExemploFunctionV2.sh
+-rw-rw-rw- 1 codespace root        91 May 15 01:55 ExemploFunctionV3.sh
+-rw-rw-rw- 1 codespace root       137 May 15 01:55 ExemploIf.sh
+-rw-rw-rw- 1 codespace root      1096 May 15 01:55 ExemploLog.sh
+-rw-rw-rw- 1 codespace root      1248 May 15 01:55 ExemploLogV2.sh
+-rw-rw-rw- 1 codespace root       344 May 15 01:55 ExemploParametros.sh
+-rw-rw-rw- 1 codespace root       166 May 15 01:55 ExemploUntil.sh
+-rw-rw-rw- 1 codespace root       262 May 15 01:55 ExemploWhile.sh
+-rw-rw-rw- 1 codespace root       605 May 15 01:55 MenuCase.sh
+-rw-rw-rw- 1 codespace root       911 May 15 01:55 PrimeiroScript.sh
+-rw-rw-rw- 1 codespace codespace  219 May 15 11:24 log.out
