@@ -1,5 +1,5 @@
 Principais formas de gerar log nos scripts.
-Gerar a saida de eero para um arquivo de log?
+Gerar a saida de erro para um arquivo de log?
 ./PrimeiroScript.sh > log.out   GERA UM ARQUIVO NOVO ,APAGANDO TUDO QUE EXISTIA NO ANTERIOR
 ./PrimeiroScript.sh >> log.out FAZ UM APPEND NO ARQUIVO , ANEANDO NO FINAL DELE
 
