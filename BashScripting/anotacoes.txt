@@ -1,0 +1,57 @@
+$ [ -e /etc/passwd ]  --> este verifica se o diretorio existe
+$ echo $?  --> se retornar 0, quer dizer que foi executadoe é verdadeiro
+-d FILE True id file is a directory
+-e FILE True if file exists
+-f FILE True if file exists and is a regular file
+-r FILE tRUE IS A FILE IS READABL BY YOU
+-S if exists and is not empty
+-w if is writable by YOU-x if is executable by you
+
+STRING OPERATORS:EXEMPLO : [ -n $STRING ]
+-z STRING True if string is empty
+-n STRING True if string is not empty
+STRING1 = STRING2
+    True if the string are equal
+STRING1 != STRING2
+    True if strings are not equal
+
+ARITHMETIC OPERATORS
+arg1 -eq arq2 True if arg1 is equal to arg2
+arg1 -ne arq2 True if arg1 is not equal to arg2
+arg1 -lt arq2 True if arg1 is less than to arg2
+arg1 -le arq2 True if arg1 is less than or equal to arg2
+arg1 -qt arq2 True if arg1 is greather than arg2
+arg1 -ge arq2 True if arg1 is greather than or equal to arg2
+
+MAKING DECISIONS:
+if [ condition-is-true ]
+then
+    command 1
+    command 2
+    command 3
+fi
+
+if [ condition-is-true ]
+then
+    command N
+else
+    command N
+fi
+
+if [ condition-is-true ]
+then
+    command N
+elif [ condition-is-true ]
+then
+    command N
+else
+    command N
+fi
+
+FOR LOOP:
+for VARIABLE_NAME in ITEM_1 ITEM_N
+do
+    command 1
+    command 2
+    command N
+done
