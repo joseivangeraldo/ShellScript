@@ -373,7 +373,18 @@ ps axu | wc -l → conta quantos processos estão rodando
 usa o /etc/login.defs arquivo que vem no ubuntu que tem as definições de usuário
 echo /home/* → Mostra todos os usuários que usam a pasta home , usuarios do sistema
 
+9/7/2023
+--foi criado o arquivo Dockerfile
+docker build -t servidor .
+apt install -y rsyslog
+---Ver o status do servidor
+systemctl status rsyslog  --> deu esta mensagem (bash: systemctl: command not found)
 
+docker commit DockerimageID ubuntuapache
+docker commit alp1 alpine:macoratti
+docker commit 60d3fe7345a9 94daced675fc
 
+root@7e5b9d881be1:/# cd /etc/rsyslog.d/  --. aonde fica as suas configurações de log
 
-
+docker commit -a "Author Name" -m "Commit message" container-id/container-name new-image-name
+bash: systemctl: command not found
