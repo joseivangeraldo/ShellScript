@@ -388,3 +388,14 @@ root@7e5b9d881be1:/# cd /etc/rsyslog.d/  --. aonde fica as suas configurações 
 
 docker commit -a "Author Name" -m "Commit message" container-id/container-name new-image-name
 bash: systemctl: command not found
+
+root@d0685341807b:/# apt install locate --> instalando o locate
+root@d0685341807b:/# updatedb --> é necesario atualizar a base de dados para reconhecer o comando
+
+root@d0685341807b:/# which vim -->mosttra o caminho dos arquivos executaveis ou apps
+só consegui instalar no Ubuntu QDO EXECUTEI ISTO: apt-get install bsdmainutils
+
+root@d0685341807b:/# history -->Lista os ultimos mil comandos digitados
+root@d0685341807b:/# apt-get install man-db --> Instalar whatis command
+whatis cal --> mosta um resumo doque o comando faz
+root@d0685341807b:/# apropos time --> mostra os comandos relacionados com time
