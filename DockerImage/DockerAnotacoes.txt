@@ -1,0 +1,19 @@
+1
+
+Exemple how to create image with systemd and boot like a real environment. A Dockerfile is required.
+
+FROM ubuntu:22.04
+
+RUN echo 'root:root' | chpasswd
+RUN printf '#!/bin/sh\nexit 0' > /usr/sbin/policy-rc.d
+RUN apt-get update
+RUN apt-get install -y systemd systemd-sysv dbus dbus-user-session
+RUN printf "systemctl start systemd-logind" >> /etc/profile
+
+ENTRYPOINT ["/sbin/init"]
+/sbin/init is important to init systemd and enable systemctl.
+
+Then build the system.
+
+docker build -t testimage -f Dockerfile .
+docker run -it --privileged --cap-add=ALL testimage
