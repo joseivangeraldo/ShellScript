@@ -7,8 +7,8 @@
 # Autor: José Ivan G da Silva (ivan.geraldo@gmail.com)	                               #
 # Data: 05/07/2023							                                           #
 #									                                                   #
-# Descrição: Ao terminar a fase do projeto executar na pasta raiz do diretorio,        #
-# Será excuta a adição o comitt com o comentario da data da alteração,horas e minutos  #
+# Descrição: Ao terminar a fase do projeto executar na pasta raiz do diretorio,            #
+# Será executado a adição do comitt com o comentario da data da alteração,horas e minutos  #
 #				                                                     				   #
 # Uso: ./git_auto.sh 						                                           #
 #									                                                   #
