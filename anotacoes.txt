@@ -63,18 +63,13 @@ ec2-user:~ $ cd ~ ###vai para o home
 /usr - aplicativos e arquivos que são na maioria das vezes disponíveis ao acesso de todos usuários
 /var - arquivos variáveis tal como logs e bancos de dados
 
-
-
-
 O comando “shutdown”
 -H, –halt: Para a máquina.
 -P, –poweroff: Desliga a máquina (o padrão).
 -r, –reboot: Reinicia a máquina.
 -c: cancela um encerramento pendente. Assim, ele pode ser usado para cancelar o efeito de uma chamada de desligamento com um argumento de tempo que não seja “+0” ou “now”
 
-
 ec2-user:~ $ cd ~(usuario x)  ###vai para o home de um usuario especifico
-
 whatis (comando) → exibe dicas do comando ou oque ele faz 
 
 joseivan@debian:~$ ps
@@ -82,7 +77,7 @@ joseivan@debian:~$ ps
    1542 pts/0	00:00:00 bash
    1544 pts/0	00:00:00 ps
 joseivan@debian:~$ ps -axu   
-ps axu|more  ---> vai dar mais detalhes dos processos que est]ãorodando
+ps axu|more  ---> vai dar mais detalhes dos processos que estão rodando
 
 joseivan@debian:~$ echo "shell script"
 shell script
@@ -106,26 +101,26 @@ cat -b arquivo.txt  → vai numerar as linhas não numera as linhas em branco
 .cat -n arquivo.txt →numera todas as linhas
 cat -A arquivo.txt → mostra os caracteres especiais que não aparecem
 cat –help
-tac arquivo.txt → ele lê de baixo para cima o arquivo
-tail arquivo_longo.txt → exibe as ultimas linhas qde um arquivo longo
-tail arquivo -n5 ou -5_longo.txt → exibe qtd das ultimas linha de um arquivo longo
+
 head arquivo.txt → mostra as primeiras 10 linhas por padrão
 head arquivo.txt -n3 ou -3 → mostra qtd de linhas que quero
 head arquivo.txt -c10   → mostra os primeiros 10 caracteres do arquivo
+tac arquivo.txt → ele lê de baixo para cima o arquivo
+tail arquivo_longo.txt → exibe as ultimas linhas qde um arquivo longo
+tail arquivo -n5 ou -5_longo.txt → exibe qtd das ultimas linha de um arquivo longo
+tail -n5 alunos2.txt → exibe as 5 primeiras linhas do arquivo
+tail -n5 alunos2.txt | wc -w →coloca um pilline no meio, ele fica como entrada do outro argumento , exibe a quantidade de linhas.
 wc alunos.txt → exibe linhas -  palavras - caracteres
 wc - l arquivo.txt → número de linhas
 wc -w arquivo.txt → número de palavras
 wc -m ou wc -c → números de letras
 wc alunos* → vai contar de todos os arquivos que tem algum nome parecido com aluno
-tail -n5 alunos2.txt → exibe as 5 primeiras linhas do arquivo
-tail -n5 alunos2.txt | wc -w →coloca um pilline no meio, ele fica como entrada do outro argumento , exibe a quantidade de linhas.
-
-sort alunos.txt  → ordena o arquivo na ordem alfabetica
-sort -r alunos.txt  → ordena na ordem reversa
-sort -k2 alunos.txt → ordena pelo segundo campo de cada linha
 tail /etc/passwd |sort -k3 -t”:” → explico para o sort que o delimitador é “:”
 tail /etc/passwd |sort -k3 -t”:” -g → com -g ele considera algarismo como numerico
 uniq alunos.txt → exibe somente palavras unicas, não repete, se as repetidas estiverem na sequencia
+sort alunos.txt  → ordena o arquivo na ordem alfabetica
+sort -r alunos.txt  → ordena na ordem reversa
+sort -k2 alunos.txt → ordena pelo segundo campo de cada linha
 sort alunos.txt |uniq → melhor pratica fazer primeiro um sor , depois um uniq
 sort alunos.txt |uniq -u → mostra só as linhas que não estão repetidas só as que apareceram 1 vez
 sort alunos.txt |uniq -d → mostra somente as linhas que estão duplicadas
@@ -133,7 +128,6 @@ sort alunos.txt |uniq -c → conta/exibe a quantidade das ocorrencias
 sort alunos.txt |unic -c |sort → ordena, conta os unicos, ordena depois
 sort alunos.txt |unic -c |sort -r → ordena, conta os unicos,, sorteia em modo reverso
 sort alunos.txt |unic -c |sort -r |head -n1 → só o cabeçalho a primeira linha.
-
 cat alunos.txt |tr a e → troca as palavras que tem ‘a’ pela letra ‘e’ 
 cat alunos.txt| tr a-z A-Z → troca todas as letras minusculas para maiusculas
 cat alunos.txt| tr aei AEI → troca aei por AEI
