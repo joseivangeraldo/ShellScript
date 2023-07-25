@@ -1,9 +1,6 @@
-FROM ubuntu:22.04
-
-RUN echo 'root:root' | chpasswd
-RUN printf '#!/bin/sh\nexit 0' > /usr/sbin/policy-rc.d
-RUN apt-get update
-RUN apt-get install -y systemd systemd-sysv dbus dbus-user-session
-RUN printf "systemctl start systemd-logind" >> /etc/profile
-
-ENTRYPOINT ["/sbin/init"]
+# define a imagem base
+FROM debian:latest
+# define o mantenedor da imagem
+LABEL maintainer="José Ivan"
+# Atualiza a imagem com os pacotes
+RUN apt-get update && apt-get upgrade -y

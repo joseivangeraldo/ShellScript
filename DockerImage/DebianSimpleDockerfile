@@ -4,3 +4,4 @@ FROM debian:latest
 LABEL maintainer="José Ivan"
 # Atualiza a imagem com os pacotes
 RUN apt-get update && apt-get upgrade -y
+RUN apt-get install vim -Y

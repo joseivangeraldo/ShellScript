@@ -1,0 +1,848 @@
+ivan@ivan-22V280-L-BY31P1:~$ docker image ls
+ivan@ivan-22V280-L-BY31P1:~$ docker ps -a  ####DETALHES DOS CONTAINERS E HISTORICO
+ivan@ivan-22V280-L-BY31P1:~$ docker images  ##lista das imagens docker existentes
+
+############rodar container###########################
+ivan@ivan-22V280-L-BY31P1:~$ docker run -d redis
+
+############PARAR O CONTAINER ########################
+ivan@ivan-22V280-L-BY31P1:~$ docker stop 7261c16e95db 
+
+############START CONTAINER ##########################
+ivan@ivan-22V280-L-BY31P1:~$ docker start 7261c16e95db 
+
+ivan@ivan-22V280-L-BY31P1:~$ docker ps 
+
+APOS O COMANDO FOI INICIALIZADO DOIS CONTAINERS COM DUAS VERSOES DIFERENTES DO REDIS
+
+CONTAINER ID   IMAGE       COMMAND                  CREATED          STATUS         PORTS      NAMES
+7261c16e95db   redis       "docker-entrypoint.s…"   10 minutes ago   Up 3 minutes   6379/tcp   reverent_cohen
+f42ead41e69d   redis:4.0   "docker-entrypoint.s…"   24 hours ago     Up 4 seconds   6379/tcp   friendly_wing
+
+PODE-SE VER QUE OS DOIS CONTAINERS OCUPAM A MESMA PORTA, COMO EVITAR CONFLITOS
+COLOCA UMA PORTA DISPONIVEL DO PC NO CASO 6000 E APONTA PARA A PORTA CONFIGURADA DO CONTAINER
+ivan@ivan-22V280-L-BY31P1:~$ docker run -p6000:6379 redis
+
+#####ABAIXO FOI CRIADO O VINCULO#############
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS              PORTS                                       NAMES
+8f7a0e260557   redis     "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:6000->6379/tcp, :::6000->6379/tcp   optimistic_lewin
+
+#####ABAIXO FOI CRIADO OUTRO VINCULO COMOUTRA VERSÃO DO REDIS#############3
+ivan@ivan-22V280-L-BY31P1:~$ docker run -p6001:6379 redis:4.0 
+
+####AS DUAS APLICAÇÕES APONTANDO PARA DUAS PORTAS DIFERENTES###########
+CONTAINER ID   IMAGE       COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+1f0d0f2f783a   redis:4.0   "docker-entrypoint.s…"   2 minutes ago    Up 2 minutes    0.0.0.0:6001->6379/tcp, :::6001->6379/tcp   flamboyant_shaw
+8f7a0e260557   redis       "docker-entrypoint.s…"   11 minutes ago   Up 11 minutes   0.0.0.0:6000->6379/tcp, :::6000->6379/tcp   optimistic_lewin
+
+###############DIAGNOSTICS#############
+####SE VOCÊ NÃO LEMBRAR O ID VOCE PODE COLOCAR O NAME "flamboyant_shaw"
+ivan@ivan-22V280-L-BY31P1:~$ docker logs 1f0d0f2f783a  ### COLOCAR  O CONTAINER ID##########
+
+####COLOCAR OUTRO NOME FORA DO PADRÃO NO CONTAINER #########
+ivan@ivan-22V280-L-BY31P1:~$ docker run -p6001:6379 --name redis-older redis:4.0
+#########RESULTADO ############3
+CONTAINER ID   IMAGE       COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+5780f993aba4   redis:4.0   "docker-entrypoint.s…"   18 seconds ago   Up 15 seconds   0.0.0.0:6001->6379/tcp, :::6001->6379/tcp   redis-older
+
+#########EXEC COMANDO ############3
+###ESTOU DENTRO DO CONTAINER COMO ROOT USER####
+ivan@ivan-22V280-L-BY31P1:~$ docker exec -it 077a165f23ea /bin/bash
+root@077a165f23ea:/data# 
+root@077a165f23ea:/data# ls
+root@077a165f23ea:/data# pwd
+/data
+root@077a165f23ea:/data# /
+bash: /: Is a directory
+root@077a165f23ea:/data# cd /
+root@077a165f23ea:/# ls
+bin  boot  data  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+root@077a165f23ea:/# env
+HOSTNAME=077a165f23ea
+REDIS_DOWNLOAD_SHA=284d8bd1fd85d6a55a05ee4e7c31c31977ad56cbf344ed83790beeb148baa720
+PWD=/
+HOME=/root
+REDIS_VERSION=7.0.0
+GOSU_VERSION=1.14
+TERM=xterm
+REDIS_DOWNLOAD_URL=http://download.redis.io/releases/redis-7.0.0.tar.gz
+SHLVL=1
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+_=/usr/bin/env
+OLDPWD=/data
+root@077a165f23ea:/# exit
+exit
+ivan@ivan-22V280-L-BY31P1:~$ 
+
+docker ps -a                # Lists containers (and tells you which images they are spun from)
+
+docker images               # Lists images 
+
+docker rm <container_id>    # Removes a stopped container
+
+docker rm -f <container_id> # Forces the removal of a running container (uses SIGKILL)
+
+docker rmi <image_id>       # Removes an image 
+                            # Will fail if there is a running instance of that image i.e. container
+
+docker rmi -f <image_id>    # Forces removal of image even if it is referenced in multiple repositories, 
+                            # i.e. same image id given multiple names/tags 
+                            # Will still fail if there is a docker container referencing image
+                            
+c562ab121b21   mysql:8   "docker-entrypoint.s…"   About a minute ago   Up About a minute   3306/tcp, 33060/tcp   zealous_agnesi
+ivan@ivan-22V280-L-BY31P1:~$ docker exec c562ab121b21
+"docker exec" requires at least 2 arguments.
+See 'docker exec --help'.
+
+Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+Run a command in a running container
+ivan@ivan-22V280-L-BY31P1:~$ docker exec c562ab121b21 mysql --version
+mysql  Ver 8.0.29 for Linux on x86_64 (MySQL Community Server - GPL)
+ivan@ivan-22V280-L-BY31P1:~$ docker exec c562ab121b21 mysql -e 'show databases'
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+ivan@ivan-22V280-L-BY31P1:~$ docker exec c562ab121b21 mysql -u root -p123 -e 'show databases'
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Database
+information_schema
+mysql
+performance_schema
+sys
+ivan@ivan-22V280-L-BY31P1:~$ 
+
+van@ivan-22V280-L-BY31P1:~$ docker exec -it c562ab121b21 mysql -u root -p123
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.29 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.01 sec)
+
+RODA A IMAGEM DO MEU CONTAINER 
+
+ivan@ivan-22V280-L-BY31P1:~$ docker run -e MYSQL_RANDOM_ROOT_PASSWORD=123 mysql:8 
+
+ivan@ivan-22V280-L-BY31P1:~$ docker exec faf6d6ac42f7  mysql --version
+
+10/05/2022
+ivan@ivan-22V280-L-BY31P1:~$ docker pull mysql
+Using default tag: latest
+latest: Pulling from library/mysql
+4be315f6562f: Already exists 
+96e2eb237a1b: Already exists 
+8aa3ac85066b: Already exists 
+ac7e524f6c89: Already exists 
+f6a88631064f: Already exists 
+15bb3ec3ff50: Already exists 
+ae65dc337dcb: Already exists 
+573c3c7fa18d: Already exists 
+9d10771b98b8: Already exists 
+3d8ef442614b: Already exists 
+7dc17a6cea26: Already exists 
+752752efdaea: Already exists 
+Digest: sha256:2dafe3f044f140ec6c07716d34f0b317b98f8e251435abd347951699f7aa3904
+Status: Downloaded newer image for mysql:latest
+docker.io/library/mysql:latest
+
+ivan@ivan-22V280-L-BY31P1:~$ docker pull mysql:5.7
+5.7: Pulling from library/mysql
+4be315f6562f: Already exists 
+96e2eb237a1b: Already exists 
+8aa3ac85066b: Already exists 
+ac7e524f6c89: Already exists 
+f6a88631064f: Already exists 
+15bb3ec3ff50: Already exists 
+ae65dc337dcb: Already exists 
+a4c4c43adf52: Pull complete 
+c6cab33e8f91: Pull complete 
+2e1c4f2c43f6: Pull complete 
+2e5ee322af48: Pull complete 
+Digest: sha256:e767595ba3408fbb2dda493be3594b9a148178df58325fafe8b0363662935624
+Status: Downloaded newer image for mysql:5.7
+docker.io/library/mysql:5.7
+
+ivan@ivan-22V280-L-BY31P1:~$ docker run -e MYSQL_ROOT_PASSWORD=root mysql:5.7
+
+ivan@ivan-22V280-L-BY31P1:~$ docker ps
+CONTAINER ID   IMAGE       COMMAND                  CREATED              STATUS              PORTS                 NAMES
+bc6eeae96717   mysql:5.7   "docker-entrypoint.s…"   About a minute ago   Up About a minute   3306/tcp, 33060/tcp   adoring_wilson
+
+ivan@ivan-22V280-L-BY31P1:~$ docker stop bc6eeae96717
+bc6eeae96717
+
+##########ABAIXO CRIA O NOME QUE A GENTE QUER DO CONTAINER 
+##########USANDO O -d ELE NÃO TRAVA O TERMINAL RODA EM BACKGROUND
+docker run -e MYSQL_ROOT_PASSWORD=root --name meu-mysql -d mysql:5.7
+
+ivan@ivan-22V280-L-BY31P1:~$ docker ps 
+CONTAINER ID   IMAGE       COMMAND                  CREATED         STATUS         PORTS                 NAMES
+917798b8e3f3   mysql:5.7   "docker-entrypoint.s…"   6 seconds ago   Up 3 seconds   3306/tcp, 33060/tcp   meu-mysql
+
+ivan@ivan-22V280-L-BY31P1:~$ docker inspect meu-mysql | grep IPAddress
+            "SecondaryIPAddresses": null,
+            "IPAddress": "172.17.0.2",
+                    "IPAddress": "172.17.0.2",
+                    
+ivan@ivan-22V280-L-BY31P1:~$ docker rm -f meu-mysql
+meu-mysql
+
+####PARA SER REFLETIDONAPORTA DO HOST##############
+docker run -e MYSQL_ROOT_PASSWORD=root --name meu-mysql -d -p 3306:3306  mysql:5.7
+
+###########REMOVER TODOS OS CONTAINERS ATALHO###############
+docker rm -f $(docker ps -aq) is a short command which I use to remove all containers.
+
+#########vER QUE PROCESSO ESTA USANDO A PORTA##########
+sudo lsof -i -P -n | grep <port number> -> this one was good enough to debug on OSX ty :)
+
+####MATAR O PROCESSO QUE ESTA OCUPANDO A PORTA ##########
+mysqld    1524           mysql   34u  IPv4  50226      0t0  TCP 127.0.0.1:3306 (LISTEN)
+ivan@ivan-22V280-L-BY31P1:~$  sudo kill <ID PROCESSO>
+ivan@ivan-22V280-L-BY31P1:~$ sudo kill 1524
+
+#########APOS FICOU ASSIM#############
+ivan@ivan-22V280-L-BY31P1:~$ docker ps
+CONTAINER ID   IMAGE       COMMAND                  CREATED         STATUS         PORTS                                                  NAMES
+20acc0df608f   mysql:5.7   "docker-entrypoint.s…"   3 minutes ago   Up 3 minutes   0.0.0.0:3306->3306/tcp, :::3306->3306/tcp, 33060/tcp   meu-mysql
+
+############VOLUME EM DOCKER###########
+ivan@ivan-22V280-L-BY31P1:~$ docker run -d --name mysql-vol -e MYSQL_ROOT_PASSWORD=root  mysql
+b6c9d97be42352f3f513d18e81b1857401e67c8f07279a79e8f5d9ac098608ef
+
+#####CRIEI UM OUTRO CONTAINER###########
+ivan@ivan-22V280-L-BY31P1:~$ docker run -d --name mysql-vol2 -e MYSQL_ROOT_PASSWORD=root  mysql
+fd51c5409a19513def154ed88bb22bdc26f8c182664ab6371098df3fa60aacd1
+
+##########PODE-SE VER OS DOIS VOLUMES QUE SAÓ TOTLAMENTE DIFERENTES###########
+ivan@ivan-22V280-L-BY31P1:~$ docker volume ls
+DRIVER    VOLUME NAME
+local     74a1b48551010241c7cf64b6a8fbbff878bd0c4027066816eea8535544b5b2e8
+local     b77a8e2bffe037c9ab4a0bade941e652236cde7284025b6aa543a32cc11eaf4c
+
+##########INSPECIONAR CONTAINERS##########
+ivan@ivan-22V280-L-BY31P1:~$ docker inspect mysql-vol
+PROCURAR ALGO ASSIM:
+        "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "b77a8e2bffe037c9ab4a0bade941e652236cde7284025b6aa543a32cc11eaf4c",
+                "Source": "/var/snap/docker/common/var-lib-docker/volumes/b77a8e2bffe037c9ab4a0bade941e652236cde7284025b6aa543a32cc11eaf4c/_data",
+                "Destination": "/var/lib/mysql",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            }
+
+
+
+##########DELETAR TODOS OS VOLUMES NÃO USADOS POR CONTAINERS###############
+ivan@ivan-22V280-L-BY31P1:~$ docker volume prune
+WARNING! This will remove all local volumes not used by at least one container.
+Are you sure you want to continue? [y/N] y
+
+##########CRIANDO UM VOLUME####################
+ivan@ivan-22V280-L-BY31P1:~$ docker volume create mysql-db
+mysql-db
+ivan@ivan-22V280-L-BY31P1:~$ docker volume ls
+DRIVER    VOLUME NAME
+local     mysql-db
+ivan@ivan-22V280-L-BY31P1:~$ sudo ls /var/snap/docker/common/var-lib-docker/volumes
+backingFsBlockDev  metadata.db	mysql-db
+ivan@ivan-22V280-L-BY31P1:~$ 
+
+####RODAR O CONTAINER E LINKAR COM O VOLUME QUE FOI CRIADO #######
+ivan@ivan-22V280-L-BY31P1:~$ docker run -d --name mysql-vol -e MYSQL_ROOT_PASSWORD=root -v mysql-db:/tmp/aula-volume mysql
+ecfd5e05a4b977d00c060362daffcb2d236065d91a25744c7bae0f5c7e754670
+ivan@ivan-22V280-L-BY31P1:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                 NAMES
+ecfd5e05a4b9   mysql     "docker-entrypoint.s…"   25 seconds ago   Up 17 seconds   3306/tcp, 33060/tcp   mysql-vol
+
+#########ENTRANDO NO BASH DO CONTAINER##############3
+ivan@ivan-22V280-L-BY31P1:~$ docker exec -it mysql-vol /bin/bash
+root@ecfd5e05a4b9:/# ls
+bin   docker-entrypoint-initdb.d  home	 media	proc  sbin  tmp
+boot  entrypoint.sh		  lib	 mnt	root  srv   usr
+dev   etc			  lib64  opt	run   sys   var
+root@ecfd5e05a4b9:/# cd /tmp
+root@ecfd5e05a4b9:/tmp# ls
+aula-volume
+root@ecfd5e05a4b9:/tmp# cd aula-volume/
+root@ecfd5e05a4b9:/tmp/aula-volume# ls
+root@ecfd5e05a4b9:/tmp/aula-volume# echo "testando Volume" >> teste.txt
+root@ecfd5e05a4b9:/tmp/aula-volume# ls
+teste.txt
+root@ecfd5e05a4b9:/tmp/aula-volume# cat teste.txt
+testando Volume
+root@ecfd5e05a4b9:/tmp/aula-volume# exit
+
+#####VENDO ARQUIVO NO HOST##############
+ivan@ivan-22V280-L-BY31P1:~$ sudo ls /var/snap/docker/common/var-lib-docker/volumes/mysql-db/_data
+teste.txt
+
+##### UMA POSSIBILIDADE É CRIAR OVOLUME NO MOMENTO QUE ESTA CRIANDO O CONTAINER #########
+ivan@ivan-22V280-L-BY31P1:~$ docker run -d --name mysql-vol -e MYSQL_ROOT_PASSWORD=root -v mysql-db2:/tmp/aula-volume mysql
+c783dda251325ba368575b0eba88371ca8794d1d4881c8d7faecbe1a01c723df
+ivan@ivan-22V280-L-BY31P1:~$ docker volume ls
+DRIVER    VOLUME NAME
+local     6373b6b0d04ced4a6fc175e00cbafb786290de04a84878b3370aa2a23456551a
+local     mysql-db2
+ivan@ivan-22V280-L-BY31P1:~$ 
+#############USANDO O MOUNT ##################
+ivan@ivan-22V280-L-BY31P1:~$ docker run -d --name mysql-vol -e MYSQL_ROOT_PASSWORD=root --mount source=mysql-db3,destination=/tmp/teste mysql
+ae7257e41004777334d5061c6b1c5b6873b4cb56bd9d5a6ec1dbb27291e713a1
+
+##########################################################################################################3
+root@334caab54a52:/# apt-get update
+root@334caab54a52:/# apt-get install apache2
+root@334caab54a52:/# service apache2 start
+root@334caab54a52:/# ifconfig
+root@334caab54a52:/# apt install net-tools
+root@334caab54a52:/# ifconfig
+root@334caab54a52:/# 
+
+root@5005bb79c41a:/#  ####BASH DA IMAGEM UBUNTU##########
+############COLOCA O MESMO NOME DA IMAGEM NO COMMIT E DEPOIS O NOME QUE QUEREMOS###################
+ivan@ivan-22V280-L-BY31P1:~$ docker commit 5005bb79c41a ubuntuapache
+
+ivan@ivan-22V280-L-BY31P1:~$ docker images
+REPOSITORY      TAG       IMAGE ID       CREATED          SIZE
+ubuntuapache    latest    d41db509e755   15 seconds ago   220MB
+mongo           latest    27dd1be4bed1   2 weeks ago      700MB
+ubuntu          latest    d2e4e1f51132   2 weeks ago      77.8MB
+redis           latest    a10f849e1540   2 weeks ago      117MB
+mysql           5.7       8aa4b5ffb001   2 weeks ago      462MB
+mysql           latest    96d0eae5ed60   2 weeks ago      524MB
+postgres        9.6       027ccf656dc1   3 months ago     200MB
+mongo-express   latest    2d2fb2cabc8f   6 months ago     136MB
+redis           4.0       191c4017dcdd   2 years ago      89.3MB
+postgres        10.10     9a05a2b9e69f   2 years ago      211MB
+
+
+######DOCKER JENKINS#######################
+ivan@ivan-22V280-L-BY31P1:~$ docker pull jenkins/jenkins
+Using default tag: latest
+latest: Pulling from jenkins/jenkins
+699c8a97647f: Pull complete 
+656837bc63c3: Pull complete 
+81ba85001557: Pull complete 
+f565cdb160fe: Pull complete 
+7f0db80857b0: Pull complete 
+b51e09c8a0bd: Pull complete 
+a02b1ab95401: Pull complete 
+b113c3f8acf6: Pull complete 
+90c616f07a2d: Pull complete 
+22b926230283: Pull complete 
+32fdd8eaf030: Pull complete 
+e04af8aa1a05: Pull complete 
+3938fe646b55: Pull complete 
+Digest: sha256:8656eb80548f7d9c7be5d1f4c367ef432f2dd62f81efa86795c9155258010d99
+Status: Downloaded newer image for jenkins/jenkins:latest
+docker.io/jenkins/jenkins:latest
+ivan@ivan-22V280-L-BY31P1:~$ docker images
+REPOSITORY        TAG       IMAGE ID       CREATED         SIZE
+jenkins/jenkins   latest    f16216f97fcb   12 days ago     467MB
+ubuntuapache      latest    d41db509e755   9 months ago    220MB
+mongo             latest    27dd1be4bed1   9 months ago    700MB
+ubuntu            latest    d2e4e1f51132   9 months ago    77.8MB
+redis             latest    a10f849e1540   9 months ago    117MB
+mysql             5.7       8aa4b5ffb001   9 months ago    462MB
+mysql             latest    96d0eae5ed60   9 months ago    524MB
+postgres          9.6       027ccf656dc1   12 months ago   200MB
+mongo-express     latest    2d2fb2cabc8f   16 months ago   136MB
+hello-world       latest    feb5d9fea6a5   17 months ago   13.3kB
+redis             4.0       191c4017dcdd   2 years ago     89.3MB
+postgres          10.10     9a05a2b9e69f   3 years ago     211MB
+
+#####SABER AONDE DOCKER SALVA OS ARQUIVOS#################3
+ivan@ivan-22V280-L-BY31P1:~$ docker info | grep -i root
+ Docker Root Dir: /var/snap/docker/common/var-lib-docker
+ ##########################################################
+ 
+ ###########SABER O TAMANHO DE TODOS OS DOCKERS IMAGES###################3
+ ivan@ivan-22V280-L-BY31P1:~$ sudo du -sh /var/snap/docker/common/var-lib-docker
+[sudo] senha para ivan: 
+3,3G	/var/snap/docker/common/var-lib-docker
+
+########force delete images#########
+ivan@ivan-22V280-L-BY31P1:~$ docker images
+REPOSITORY      TAG       IMAGE ID       CREATED         SIZE
+<none>          <none>    d2e4e1f51132   9 months ago    77.8MB
+mongo-express   latest    2d2fb2cabc8f   16 months ago   136MB
+postgres        10.10     9a05a2b9e69f   3 years ago     211MB
+ivan@ivan-22V280-L-BY31P1:~$ docker rmi -f mongo-express
+ivan@ivan-22V280-L-BY31P1:~$ docker rmi -f postgres:10.10
+Untagged: postgres:10.10
+
+################################################################
+ivan@ivan-22V280-L-BY31P1:~/Docker$ docker build -t hi-docker .
+Sending build context to Docker daemon  3.072kB
+Step 1/4 : FROM node:alpine
+alpine: Pulling from library/node
+63b65145d645: Pull complete 
+2012da848ea4: Pull complete 
+5ac0500b54c0: Pull complete 
+8e164879ca98: Pull complete 
+Digest: sha256:78fa26eb2b8081e9005253e816ed75eaf6f828feeca1e1956f476356f050d816
+Status: Downloaded newer image for node:alpine
+ ---> 4615c4abcbab
+Step 2/4 : COPY . /app
+ ---> d546bc5543dc
+Step 3/4 : WORKDIR /app
+ ---> Running in 72324cd11801
+Removing intermediate container 72324cd11801
+ ---> 35f2415f82ec
+Step 4/4 : CMD node app.js
+ ---> Running in 63db31f0b124
+Removing intermediate container 63db31f0b124
+ ---> 2ceac7c698b2
+Successfully built 2ceac7c698b2
+Successfully tagged hi-docker:latest
+
+###Puchando o Ubuntu no modo interativo.#####
+ELE RODA E APÓS ENCERRADO ELE SAI DA NOSSA MAQUINA
+ivan@ivan-22V280-L-BY31P1:~$ docker run -it ubuntu
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+
+root@052d9e87f2cc:/# whoami  ######QUE USUARIO EU SOU
+root
+root@052d9e87f2cc:/# echo Hi 
+Hi
+root@052d9e87f2cc:/# echo $0 ####QUAL É MEU DIRETORIO
+/bin/bash
+root@052d9e87f2cc:/# history
+    1  ls
+    2  whoami
+    3  echo Hi
+    4  echo $0
+    5  history
+root@052d9e87f2cc:/# 
+#####Listar todos APT #####ADVANCED PACKET TOOL
+root@052d9e87f2cc:/# apt list
+Listing... Done
+####atualizar os pacotes UBUNTU########
+root@052d9e87f2cc:/# apt update
+######INSTALAR PACOTES#########
+root@052d9e87f2cc:/# apt install nano
+
+#######IR PARA O DIRETORIO HOME :##################33333
+root@534c2d0d6a76:/# cd ~
+########MOSTAR CONTEUDO DO ARQUIVO NO CONSOLE ###############
+root@534c2d0d6a76:~# cat /etc/debconf.conf
+root@534c2d0d6a76:~# more /etc/debconf.conf   ######MOSTRA PAGINADO ITEM POR ITEM ########
+
+##########CONCATENAR DOIS ARQUIVOS ################
+root@534c2d0d6a76:~# cat ivan.txt > teste.txt
+root@534c2d0d6a76:~# ls
+ivan.txt  teste.txt
+###########MAIS DE UM ARQUIVO EM OUTRO########################3
+root@534c2d0d6a76:~# cat ivan.txt teste.txt > file.txt
+########## UTILIZANDO O ECHO ############333
+root@534c2d0d6a76:~# echo hi docker > docker.txt
+root@534c2d0d6a76:~# cat docker.txt
+hi docker
+############GREP Global Record Regular Print ###############
+root@534c2d0d6a76:~# grep hello ivan.txt    ####PROCURA NO ARQUIVO
+hello
+root@534c2d0d6a76:~# grep hello ivan.txt docker.txt   ####PROCURA NOS ARQUIVOS
+ivan.txt:hello   #####NO CASO ACHOU SOMENTEA OCORRENCIA EM 1 ARQUIVO
+########PROCURA TODAS A PALAVRAS NOS ARQUIVOS DENTRO DO DIRETORIO #################
+root@534c2d0d6a76:~# grep -i -r hello .    ##### i IGNORA O UPERCASE OU LOWER CASE #### r PROCURA NOS SUBDIRETORIOS
+./teste.txt:hello
+./ivan.txt:hello
+./file.txt:hello
+./file.txt:hello
+root@534c2d0d6a76:~# 
+##############FIND É PARECIDO################
+root@534c2d0d6a76:~# find -type f   ##### f SE BUSCA SOMENTE NOMES DE ARQUIVOS d PARA DIRETORIO
+./.profile
+./.bashrc
+./teste.txt
+./ivan.txt
+./docker.txt
+./file.txt
+#########Buscar um arquivo só pelo nome##################3
+root@534c2d0d6a76:~# find -type f -name "docker.txt"
+########Utilizando caracter curinga #########
+root@534c2d0d6a76:~# find -type f -name "iv*"
+./ivan.txt
+
+##########EXECUTANDO MULTIPLOS COMANDOS##############
+root@534c2d0d6a76:~# mkdir teste1; cd teste; echo ok
+ok
+root@534c2d0d6a76:~/teste# 
+########USANDO O OPERADOR && SE ENCONTRAR UM ERRO ELENÃO EXECUTA OS PROXIMOS COMANDOS############
+root@534c2d0d6a76:~# mkdir teste1 && cd teste && echo ok
+mkdir: cannot create directory 'teste1': File exists
+root@534c2d0d6a76:~# 
+
+########### GERENCIANDO PROCESSOS ################################
+root@534c2d0d6a76:~# ps  #######LISTA OS PROCESSOS COM A SUA RESPECTIVA ID
+    PID TTY          TIME CMD
+      1 pts/0    00:00:00 bash  #####Born Against shell
+    312 pts/0    00:00:00 ps
+root@534c2d0d6a76:~# sleep 5  ####Simular techado fica travado pelo tempo depois é liberado####
+root@534c2d0d6a76:~# ps         
+    PID TTY          TIME CMD
+      1 pts/0    00:00:00 bash
+    318 pts/0    00:00:00 sleep
+    320 pts/0    00:00:00 ps
+root@534c2d0d6a76:~# kill 318
+[2]+  Terminated              sleep 500
+
+##########GERENCIAMENTO DE USUARIO ########
+root@534c2d0d6a76:~# whoami
+root
+root@534c2d0d6a76:~# useradd -m andre    #####ADICIONOU O USARIO ANDRE COM A PASTA HOME
+usermod ---> editar usuario
+userdel ---> deletar usuario
+########PROCURAR USUARIO MNA LISTA PASSWORD#########
+root@534c2d0d6a76:~# cat /etc/passwd
+andre:x:1000:1000::/home/andre:/bin/sh   ####AQUI APARECEU O USUARIO QUE EU CRIEI ######
+##########LOGANDO EM OUTRA JANELA COMO OUTRO USUARIO #########
+CONTAINER ID   IMAGE     COMMAND       CREATED             STATUS             PORTS     NAMES
+534c2d0d6a76   ubuntu    "/bin/bash"   About an hour ago   Up About an hour             competent_gates
+
+############LOGANDO NO DOCKER COM O COMANDO EXEC DE FORMA INTERATIVA COMO O USUARIO
+#####, COM O ID DO CONTAINER LOGAR NO BASH
+ivan@ivan-22V280-L-BY31P1:~$ docker exec -it -u andre 534c2d0d6a76 bash  
+andre@534c2d0d6a76:/$ ivan@ivan-22V280-L-BY31P1:~$ 
+#########VER PASSWORD LISTASDE FORMA ENCRIPTADA #########33333
+root@41fee1bf1ae7:~# cat /etc/shadow
+andre:!:19410:0:99999:7:::
+
+#########GERENCIAMENTO DE GRUPOS #########
+####Quando se cria um usuario vc cria o seu grupo primario
+root@41fee1bf1ae7:~# cat /etc/group
+############cria grupos ##########
+root@41fee1bf1ae7:~# groups andre
+andre : andre
+root@41fee1bf1ae7:~# groupadd docker
+##########ADICIONAR ANDRE NO GRUPO DOCKER###########
+root@41fee1bf1ae7:~# usermod -G docker andre
+root@41fee1bf1ae7:~# groups andre
+andre : andre docker
+root@41fee1bf1ae7:~# 
+
+########PERMISSOES DE ARQUIVOS ####################
+root@41fee1bf1ae7:~# ls l
+ls: cannot access 'l': No such file or directory
+#######LISTA ARQUIVOS COM AS SUAS PERMISSOES ##############
+root@41fee1bf1ae7:~# ls -l
+total 12
+-rw-r--r-- 1 root root 10 Feb 22 12:42 docker.txt
+-rw-r--r-- 1 root root 17 Feb 22 12:41 ivan.txt
+-rw-r--r-- 1 root root 17 Feb 22 12:42 teste.txt
+root@41fee1bf1ae7:~# 
+########EXEMPLO ALTERAR PERMISSÃO PAERA EXECUTAR DOCKER.TXT #####
+root@41fee1bf1ae7:~# ls -l
+total 20
+drwxr-xr-x 2 root root 4096 Feb 22 12:48 docker
+-rw-r--r-- 1 root root   10 Feb 22 12:42 docker.txt
+-rw-r--r-- 1 root root   27 Feb 22 12:46 file.txt
+-rw-r--r-- 1 root root   17 Feb 22 12:41 ivan.txt
+-rw-r--r-- 1 root root   17 Feb 22 12:42 teste.txt
+root@41fee1bf1ae7:~# chmod u+x docker.txt
+root@41fee1bf1ae7:~# ls -l
+
+#######INSTRUCOES NO DOCKERFILE QUE SAO EXECUTADAS E CRIA A MINHA IMAGEM #######
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker build -t app .
+########RODO A MINHA IMAGEM NO MODO SHELL #######
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker run -it app sh
+
+#######AGORA CRIA A IMAGEM COM O WORKDIR QUE ESTA NA MINHA MAQUINA #######
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker build -t app .
+Sending build context to Docker daemon   4.88MB
+Step 1/3 : FROM node:12-alpine
+ ---> bb6d28039b8c
+Step 2/3 : WORKDIR /app
+ ---> Running in daead31015c9
+Removing intermediate container daead31015c9
+ ---> 9cc9090283b1
+Step 3/3 : COPY . .
+ ---> 1de945cbdb34
+Successfully built 1de945cbdb34
+Successfully tagged app:latest
+########RODO A MINHA IMAGEM DE NOVO EM MODO SHELL #######
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker run -it app sh
+/app # ls
+Dockerfile    package.json  spec          src           yarn.lock
+############# ULTIMOS COMANDOS ####################
+Removing intermediate container 088e4a30da69
+ ---> ed98d0024992
+Step 5/7 : RUN yarn install --production
+ ---> Running in 6f506c163594
+yarn install v1.22.18
+[1/4] Resolving packages...
+warning Resolution field "ansi-regex@5.0.1" is incompatible with requested version "ansi-regex@^2.0.0"
+warning Resolution field "ansi-regex@5.0.1" is incompatible with requested version "ansi-regex@^3.0.0"
+
+########### CONSTROI ###############
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker build -t app .
+############ RODA MONTANDO A PORTA DE COMUNICAÇÃO #############333
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker run -dp 3000:3000 app
+
+############## Criar uma tag para a imagem ###########33
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker image tag app:latest app:1.0.0
+#######Dei uma taga de versionamento com o arquivo que foi alteradp ###############3
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker build -t app:v1.0.1 .
+
+########## COMPARTILHANDO IMAGENS PARA DOCKER HUB #################
+######Primeiro fiz um buid e noemei a minha versão como v1########3
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker build -t app:v1 .
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker images
+REPOSITORY   TAG         IMAGE ID       CREATED         SIZE
+app          v1          699c9959e987   15 hours ago    405MB
+######TENHO ENTAO DE ADICIONAR UMA TAG A IMAGEM IGUAL AQUE ESTA NO DOCKERHUB : joseivangeraldo/app######
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker image tag 699c9959e987 joseivangeraldo/app:v1
+#######FAZENDO UPLOAD DE OUTA VERSAO #######
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker build -t app:v2 .
+###########RENOMEIO A TAG NOVAMENTE###############
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker image tag 91d1b65bf536 joseivangeraldo/app:v2
+#######DEPOIS FAÇO O PUSH PARA O REPOSTITORIO ################
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker push joseivangeraldo/app:v2
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker image load -i appv2.tar
+b03f1005bca8: Loading layer  4.881MB/4.881MB
+Loaded image: app:v2
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker images
+REPOSITORY            TAG         IMAGE ID       CREATED          SIZE
+app                   v2          91d1b65bf536   18 minutes ago   405MB
+
+
+
+############ SALVANDO E CARREGANDO IMAGENS ####################
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker image save -o appv2.tar app:v2
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ ls
+appv2.tar  Dockerfile  package.json  README.txt  spec  src  yarn.lock
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ 
+
+########DELETYAR TODOS OS CONTAINERS NÃO USADOS###########
+docker system prune [OPTIONS]
+
+
+###########DOCKER RUN EXPLICADO ##############33
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker run -d app:v1  ###VAI RODAR EM BACKGROUND LIBERARNDO MEU TERMINAL
+8ea01e779e9872b9f6770c2011f740a887703ea79dd27714733811cd4cdc3f08
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS         PORTS      NAMES
+8ea01e779e98   app:v1    "docker-entrypoint.s…"   14 seconds ago   Up 8 seconds   3000/tcp   vibrant_ishizaka
+
+#########COLOCANDO UM NOME PARA MEU CONTAINER ###############
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker run -d --name manga app:v1
+0b4ffd72b74e2334ab386eeacf54e0e0969654c98b4d9fbd31a31ed97736d8c4
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS      NAMES
+0b4ffd72b74e   app:v1    "docker-entrypoint.s…"   6 seconds ago   Up 4 seconds   3000/tcp   manga
+
+
+#####VERIFICANDO LOG DE EVENTOS ############
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker logs -f 0b4
+Using sqlite database at /etc/todos/todo.db
+Listening on port 3000
+^C
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker logs -n 10 0b4
+Using sqlite database at /etc/todos/todo.db
+Listening on port 3000
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker logs 0b4
+Using sqlite database at /etc/todos/todo.db
+Listening on port 3000
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker logs -t 0b42023-02-23T14:38:23.253245751Z Using sqlite database at /etc/todos/todo.db
+2023-02-23T14:38:23.412782075Z Listening on port 3000
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ 
+
+#####REDIRECIONAMNETO DE PORTAS ###############333
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/app/app$ docker run -d -p 80:3000 --name papagaio app:v1
+2975153a5ee5f0398dc168ed56eb12efb2ba00277eab88f355d6d4cec48985ee
+
+#######PARA OU REMOVER TODOS OS DOCKERS###########
+Passo a passo
+Para todas as instâncias
+docker stop $(docker ps -a -q)
+
+Remove todas as instâncias
+docker rm $(docker ps -a -q)
+
+Para todas as imagens
+docker image rm $(docker image ls -a -q)
+
+Para todos os volumes
+docker volume prune
+#####################################################
+EXECUTANDO COMANDOS EM CONTAINERS
+#####################################################
+ivan@ivan-22V280-L-BY31P1:~$ docker exec papagaio ls
+ivan@ivan-22V280-L-BY31P1:~$ docker stop papagaio
+ivan@ivan-22V280-L-BY31P1:~$ docker start papagaio
+#######################################################
+
+######################################################
+		REMOVENDO CONTAINERS
+######################################################
+ivan@ivan-22V280-L-BY31P1:~$ docker rm papagaio
+ivan@ivan-22V280-L-BY31P1:~$ docker rm -f papagaio
+
+######################################################
+		VOLUMES PERSISTENTES
+######################################################
+ivan@ivan-22V280-L-BY31P1:~$ docker volume create app-dados
+app-dados
+ivan@ivan-22V280-L-BY31P1:~$ docker volume inspect app-dados
+[
+    {
+        "CreatedAt": "2023-02-23T16:22:12-03:00",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/snap/docker/common/var-lib-docker/volumes/app-dados/_data",
+        "Name": "app-dados",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+###########ADICIONAR O VOLUME A UM CONTAINER########################
+-v de volume  MEU-VOLUME-NAME:CAMINHO DAONDE RODA MINHA APP/QUALQUER_NOME
+ivan@ivan-22V280-L-BY31P1:~$ docker run -d -p 3000:3000 --name kiwi -v app-dados:/app/dados app:v1
+ebaeb81e7824b98a4e4de5cd14c18ff0a9df813c101ac569df0a187a40d6b06d
+ivan@ivan-22V280-L-BY31P1:~$ 
+ivan@ivan-22V280-L-BY31P1:~$ docker exec -it kiwi sh
+/app # ls
+Dockerfile    dados         package.json  src    #####foi criada a apasta dados
+README.txt    node_modules  spec          yarn.lock
+
+######################################################
+COPIANDO ARQUIVOS DO HOST PARA O CONTAINER
+######################################################
+COPIANDO O ARQUIVO DENTRO DO DOCKER PARA O LOCAL DO PC
+ivan@ivan-22V280-L-BY31P1:~$ docker cp kiwi2:/app/teste.txt .
+
+O  INVERSO 
+ivan@ivan-22V280-L-BY31P1:~$ docker exec -it kiwi2 sh
+/app # ls
+Dockerfile    andre.txt     node_modules  spec          teste.txt
+README.txt    dados         package.json  src           yarn.lock
+
+######################################################
+          RODANDO PROJETO NETFLIX
+######################################################
+SE ESTIVER TUDO CERTO COM O SEU ARQUIVO DOCKER COMPOSE E VOCE ESTIVER DENTRO DA SUA PASTA DE TRABALHO
+É SO RODAR O COMANDO ABAIXO
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/netflix/netflix$ docker compose up
+#######E EXIBIRÁ UMA MENSAGEM ASSIM #######
+netflix-frontend-1  | You can now view vidly-frontend in the browser.
+netflix-frontend-1  | 
+netflix-frontend-1  |   Local:            http://localhost:3000
+netflix-frontend-1  |   On Your Network:  http://172.18.0.4:3000
+######################################################
+          O ARQUIVO YAML   .yml
+######################################################
+APÓS A PARADA DO CONTAINER NÃO PRECISA DAR O BUILD DE NOVO
+COLOCAR O COMANDO DOCKER-COMPOSE COM O '-D' QUE VAI RODAR EM BACKGROUND
+LIBERANDO O CONSOLE
+#######################################################
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/netflix/netflix$ docker-compose up -d
+Starting netflix_db_1 ... done
+Starting netflix_backend_1 ... done
+Starting netflix_frontend_1 ... done
+############### ENCERRANDO A APLICAÇÃO ##########################
+ivan@ivan-22V280-L-BY31P1:~/Documentos/Udemy/Docker/netflix/netflix$ docker-compose down
+
+######################################################
+                 A REDE DOCKER
+######################################################
+frontend :172.19.0.4 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
