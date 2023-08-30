@@ -1,0 +1,2 @@
+docker pull dorowu/ubuntu-desktop-lxde-vnc:latest
+docker run -p 6080:80 -e HTTP_PASSWORD=mypassword -v /dev/shm:/dev/shm dorowu/ubuntu-desktop-lxde-vnc
