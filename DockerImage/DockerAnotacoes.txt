@@ -17,3 +17,22 @@ Then build the system.
 
 docker build -t testimage -f Dockerfile .
 docker run -it --privileged --cap-add=ALL testimage
+
+PARA INSTALAR DOCKER NOTEBOOK EM GUI INTERFACE
+docker pull jupyter/tensorflow-notebook
+docker pull jupyter/datascience-notebook
+docker run -p 10000:8888 jupyter/scipy-notebook
+docker run -p 10000:8888 jupyter/tensorflow-notebook
+docker run -p 10000:8888 jupyter/datascience-notebook
+
+PARA INSTALAR UBUNTU EM GUI INTERFACE
+docker pull dorowu/ubuntu-desktop-lxde-vnc:latest
+docker run -p 6080:80 -e HTTP_PASSWORD=mypassword -v /dev/shm:/dev/shm dorowu/ubuntu-desktop-lxde-vnc
+DEFAULT DESKTOP USER
+docker run -p 6080:80 -e USER=doro -e PASSWORD=password -v /dev/shm:/dev/shm dorowu/ubuntu-desktop-lxde-vnc
+
+COPIA TODO O DIRETORIO DO CONTAINER PARA A PASTA DE TRABALHO DO CODESPACE
+docker cp 6f90c6b7cdc7:/root/Desktop /workspaces/SheellScript/Desktop
+
+COPIA TODO O DIRETORIO DE TRABALHO PARA A PASTA DO DOCKER
+docker cp /workspaces/EbookPython/work 6f90c6b7cdc7:/root/Desktop

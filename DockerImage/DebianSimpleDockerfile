@@ -5,3 +5,15 @@ LABEL maintainer="José Ivan"
 # Atualiza a imagem com os pacotes
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install vim -Y
+
+BOA IMAGEM DOCKER 
+FROM debian:11
+
+RUN apt-get update && \
+    apt-get install -y \
+    [buildpackage] && \
+    [build my app] && \
+    apt-get autoremove --purge \
+    -y [buildpackage] && \
+    apt-get -y clean && \
+    rm -rf /var/lib/apt/lists/*
