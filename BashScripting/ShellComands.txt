@@ -1,0 +1,3 @@
+pwd --> ver caminho completo do shell ou interpretador
+ls -l --> "l é longo comando" - lista detalhada inclusive com as permissões
+chmod u+x shelltest.sh  --> detalhe somente o usuario pode executar 

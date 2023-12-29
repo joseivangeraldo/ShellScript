@@ -1,0 +1,5 @@
+i --> Insert mode
+:w --> Escrever no arquivo
+:q --> Sair do arquivo
+:q! --> Sair sem salvar
+:wq --> Escrever e Salvar arquivo
