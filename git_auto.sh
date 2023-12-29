@@ -1,17 +1,16 @@
 #!/bin/bash
 ############################################################################################
 # Arquivo para automatizar : git commit, git add, git push                                 #
-#									                                                       #	
-# Nome: git_auto.sh							                                               #
-#									                                                       #
+#									                                                                         #	
+# Nome: git_auto.sh							                                                           #
+#									                                                                         #
 # Autor: José Ivan G da Silva (ivan.geraldo@gmail.com)	                                   #
-# Data: 05/07/2023							                                               #
-#									                                                       #
+# Data: 05/07/2023							                                                           #
+#									                                                                         #
 # Descrição: Ao terminar a fase do projeto executar na pasta raiz do diretorio,            #
 # Será executado a adição do comitt com o comentario da data da alteração,horas e minutos  #
-#				                                                     				       #
-# Uso: ./git_auto.sh 						                                               #
-#									                                                       #
+#				                                                     				                       #
+# Uso: ./git_auto.sh 						                                                           #							                                                                         #
 ############################################################################################
 NOW=$(date +'%d-%m-%Y %H:%M:%S')
 #add arquivo
