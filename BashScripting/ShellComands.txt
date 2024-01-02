@@ -3,16 +3,9 @@ ls -l --> "l é longo comando" - lista detalhada inclusive com as permissões
 chmod u+x shelltest.sh  --> detalhe somente o usuario pode executar 
 $ ls -l /usr/bin | grep bash --> mostra ocorrencia de bash na primeira coluna
 echo hello > hello.txt --->escreve hello em hello.txt
-echo hello >>hello.txt ---escrevefaz um append do texto em hello.txt
-@joseivangeraldo ➜ /workspaces/ShellScript/BashScripting (main) $ wc -w hello.txt
-6 hello.txt
-@joseivangeraldo ➜ /workspaces/ShellScript/BashScripting (main) $ wc -w < hello.txt
-6
-@joseivangeraldo ➜ /workspaces/ShellScript/BashScripting (main) $
-
-@joseivangeraldo ➜ /workspaces/ShellScript/BashScripting (main) $ cat << EOF
-> Alo
-> Tudo Bem com voce
-> EOF
-Alo
-Tudo Bem com voce
+echo hello >>hello.txt ---escreve faz um append do texto em hello.txt
+$ wc -w hello.txt --> Conta quantas palavras tem o documento
+$ wc -w < hello.txt --> Conta quantas palavras tem o documento, sem exibir o nome do arquivo ao final do comando
+$ cat << EOF --> Vai iniviar o console pronto para digitar, só fecha qdo digitar EOF
+$ wc -w <<< "Hello world how are you?" --> qtd de palavras mas só estiver m duplas cotas
+$ echo $? --> Mostra se houve erro no comando , se não resultado =0
