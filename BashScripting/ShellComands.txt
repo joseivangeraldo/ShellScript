@@ -4,3 +4,15 @@ chmod u+x shelltest.sh  --> detalhe somente o usuario pode executar
 $ ls -l /usr/bin | grep bash --> mostra ocorrencia de bash na primeira coluna
 echo hello > hello.txt --->escreve hello em hello.txt
 echo hello >>hello.txt ---escrevefaz um append do texto em hello.txt
+@joseivangeraldo ➜ /workspaces/ShellScript/BashScripting (main) $ wc -w hello.txt
+6 hello.txt
+@joseivangeraldo ➜ /workspaces/ShellScript/BashScripting (main) $ wc -w < hello.txt
+6
+@joseivangeraldo ➜ /workspaces/ShellScript/BashScripting (main) $
+
+@joseivangeraldo ➜ /workspaces/ShellScript/BashScripting (main) $ cat << EOF
+> Alo
+> Tudo Bem com voce
+> EOF
+Alo
+Tudo Bem com voce
