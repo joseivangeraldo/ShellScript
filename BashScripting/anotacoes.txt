@@ -16,3 +16,19 @@ EXECUTANDO:
 bash: ./shelltest.sh: Permission denied
 PARA CORRIGIR:
 chmod u+x shelltest.sh  --> detalhe somente o usuario pode executar 
+
+ARRAYS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@joseivangeraldo ➜ /workspaces/ShellScript (main) $ ARRAY=(John Sally Mike)
+@joseivangeraldo ➜ /workspaces/ShellScript (main) $ echo ${ARRAY[*]}
+John Sally Mike
+
+@joseivangeraldo ➜ /workspaces/ShellScript (main) $ read -a color
+azul verde amarelo
+@joseivangeraldo ➜ /workspaces/ShellScript (main) $ echo ${color[*]}
+azul verde amarelo
+@joseivangeraldo ➜ /workspaces/ShellScript (main) $ echo ${color[0]}
+azul
+@joseivangeraldo ➜ /workspaces/ShellScript (main) $ echo ${color[0]:1} --> a partir do caracter 2(segundo)
+zul
+@joseivangeraldo ➜ /workspaces/ShellScript (main) $ echo ${#color[0]}  --> tamanho do elemento
+4

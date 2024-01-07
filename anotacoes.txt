@@ -418,3 +418,4 @@ root@d0685341807b:/# apropos time --> mostra os comandos relacionados com time
 
 @joseivangeraldo ➜ /var/log $ tail -f alternatives.log 
 @joseivangeraldo ➜ /var/log $ grep -i [true*] fontconfig.log
+
