@@ -32,3 +32,7 @@ azul
 zul
 @joseivangeraldo ➜ /workspaces/ShellScript (main) $ echo ${#color[0]}  --> tamanho do elemento
 4
+
+@joseivangeraldo ➜ /workspaces/ShellScript (main) $ declare -A a_array=( [flower]=rose [fruit]=Mango [car]=Honda )
+@joseivangeraldo ➜ /workspaces/ShellScript (main) $ echo ${a_array[flower]}
+rose
